@@ -1,0 +1,118 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email"]
+    },
+    "StrategicLever": {
+      "title": "Strategic Lever",
+      "description": "Adjustable strategic parameter for scenario simulation",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "current": { "type": "number" },
+        "unit": { "type": "string" }
+      },
+      "required": ["name", "min", "max", "current"]
+    },
+    "Report": {
+      "title": "Impact Report",
+      "description": "Comprehensive community impact report generated from field data",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "executiveSummary": { "type": "string" },
+        "urgentNeeds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Critical"] },
+              "location": { "type": "string" },
+              "resourceRequired": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "resourceGaps": { "type": "array", "items": { "type": "string" } },
+        "potentialImpact": { "type": "string" },
+        "actionPlan": { "type": "array", "items": { "type": "string" } },
+        "confidenceScore": { "type": "number" },
+        "volunteerOptimization": {
+          "type": "object",
+          "properties": {
+            "suggestedNGOs": { "type": "array", "items": { "type": "string" } },
+            "volunteerMatchCount": { "type": "number" },
+            "skillsIdentified": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "stakeholderViews": {
+          "type": "object",
+          "properties": {
+            "coordinator": { "type": "string" },
+            "fieldDirector": { "type": "string" },
+            "donorRep": { "type": "string" }
+          }
+        },
+        "chartData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "number" }
+            }
+          }
+        },
+        "chartTitle": { "type": "string" },
+        "marketIntelligence": {
+          "type": "object",
+          "properties": {
+            "regionalTrends": { "type": "array", "items": { "type": "string" } },
+            "demographicInsights": { "type": "string" }
+          }
+        },
+        "strategicLevers": {
+          "type": "array",
+          "items": { "$ref": "#/entities/StrategicLever" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "sourceType": { "type": "string", "enum": ["raw", "web"] },
+        "sourceUrl": { "type": "string" }
+      },
+      "required": ["userId", "title", "executiveSummary", "createdAt"]
+    },
+    "MonitoredTarget": {
+      "title": "Monitored Target",
+      "description": "Website or resource being monitored for analysis",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "url": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "lastAnalyzed": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "url", "isActive"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/reports/{reportId}": { "schema": "Report", "description": "Stored intelligence reports" },
+    "/monitoredTargets/{targetId}": { "schema": "MonitoredTarget", "description": "User specific monitoring targets" }
+  }
+}

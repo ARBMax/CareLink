@@ -1,0 +1,6 @@
+{
+  "name": "CareLink: Humanitarian Intelligence Hub",
+  "description": "An autonomous intelligence platform for care networks, connecting humanitarian needs with critical resources using real-time surveillance and AI-driven matching.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}

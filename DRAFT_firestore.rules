@@ -1,0 +1,114 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Primitive Definition
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function isEmailVerified() { return request.auth.token.email_verified == true; }
+    
+    // Admin check - includes bootstrapped admin from runtime metadata
+    function isAdmin() { 
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email == "abhinavbolar@gmail.com" && isEmailVerified())
+      ); 
+    }
+
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // Validation Blueprints (The "Anti-Update-Gap")
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email']) &&
+             data.uid == request.auth.uid &&
+             data.email is string && data.email.size() <= 256 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1048576)) &&
+             (!('role' in data) || (data.role in ['user', 'admin']));
+    }
+
+    function isValidReport(data) {
+      return data.keys().hasAll(['userId', 'title', 'executiveSummary', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             data.title is string && data.title.size() <= 256 &&
+             data.executiveSummary is string && data.executiveSummary.size() <= 32768 &&
+             (!('criticalAnomalies' in data) || (data.criticalAnomalies is list && data.criticalAnomalies.size() <= 50)) &&
+             (!('actionPlan' in data) || (data.actionPlan is list && data.actionPlan.size() <= 50)) &&
+             (!('confidenceScore' in data) || (data.confidenceScore is number)) &&
+             (!('sourceType' in data) || (data.sourceType in ['raw', 'web'])) &&
+             (!('sourceUrl' in data) || (data.sourceUrl is string && data.sourceUrl.size() <= 2048));
+    }
+
+    function isValidMonitoredTarget(data) {
+      return data.keys().hasAll(['userId', 'url', 'isActive', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             data.url is string && data.url.size() <= 2048 &&
+             data.isActive is bool;
+    }
+
+    // Collection Rules
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      // No blanket read - using isOwner
+      allow create: if isOwner(userId) && isValidUser(incoming()) && (
+        // Prevent self-elevating to admin unless already an admin
+        (!('role' in incoming()) || incoming().role == 'user' || isAdmin()) &&
+        incoming().createdAt == request.time
+      );
+      allow update: if isOwner(userId) && isValidUser(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'email', 'role']) &&
+        // Prevent changing role unless admin
+        (incoming().role == existing().role || isAdmin())
+      );
+    }
+
+    match /reports/{reportId} {
+      // Rule 8: Secure List Queries (The "Query Enforcer")
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if (isOwner(existing().userId) || isAdmin()) && isValidId(reportId);
+      
+      allow create: if isSignedIn() && isValidReport(incoming()) && 
+                    incoming().createdAt == request.time &&
+                    isValidId(reportId);
+      
+      allow update: if isOwner(existing().userId) && isValidReport(incoming()) && (
+        // Action: Edit Title/Summary
+        (incoming().diff(existing()).affectedKeys().hasOnly(['title', 'executiveSummary', 'actionPlan', 'criticalAnomalies', 'updatedAt']) && 
+         incoming().userId == existing().userId && 
+         incoming().createdAt == existing().createdAt) ||
+        isAdmin()
+      );
+      
+      allow delete: if isOwner(existing().userId) || isAdmin();
+    }
+
+    match /monitoredTargets/{targetId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if (isOwner(existing().userId) || isAdmin()) && isValidId(targetId);
+      
+      allow create: if isSignedIn() && isValidMonitoredTarget(incoming()) && 
+                    incoming().createdAt == request.time &&
+                    isValidId(targetId);
+      
+      allow update: if isOwner(existing().userId) && isValidMonitoredTarget(incoming()) && (
+        (incoming().diff(existing()).affectedKeys().hasOnly(['isActive', 'lastAnalyzed', 'updatedAt']) &&
+         incoming().userId == existing().userId &&
+         incoming().url == existing().url) ||
+        isAdmin()
+      );
+      
+      allow delete: if isOwner(existing().userId) || isAdmin();
+    }
+
+    // Role markers (for isAdmin helper)
+    match /admins/{adminId} {
+      allow read: if isAdmin();
+    }
+  }
+}
