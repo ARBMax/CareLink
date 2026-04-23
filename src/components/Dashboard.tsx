@@ -296,12 +296,27 @@ export function Dashboard() {
   const [selectedForSynthesis, setSelectedForSynthesis] = useState<StoredReport[]>([]);
   const [liveStreamData, setLiveStreamData] = useState<any[]>([]);
   const [isLiveStreamActive, setIsLiveStreamActive] = useState(false);
+  const [cooldownTimer, setCooldownTimer] = useState<number | null>(null);
+
+  // Countdown logic for the API cooldown
+  useEffect(() => {
+    if (cooldownTimer === null) return;
+    if (cooldownTimer <= 0) {
+      setCooldownTimer(null);
+      return;
+    }
+    const timer = setInterval(() => {
+      setCooldownTimer(prev => (prev !== null && prev > 0 ? prev - 1 : null));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldownTimer]);
   
   // Persistence State
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [lastScanTime, setLastScanTime] = useState<Date | null>(null);
   const [archivedReports, setArchivedReports] = useState<StoredReport[]>([]);
   
+  const abortControllerRef = useRef<AbortController | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load archived reports
@@ -368,51 +383,100 @@ export function Dashboard() {
     reader.readAsText(file);
   }, []);
 
-  const handleAnalyze = useCallback(async () => {
-    if (!rawData.trim()) return;
+  const handleAnalyze = useCallback(async (data?: string) => {
+    const dataToAnalyze = data !== undefined ? data : rawData;
+    if (!dataToAnalyze.trim()) return;
+    
+    // Create new AbortController for this task
+    abortControllerRef.current = new AbortController();
+    
     setIsAnalyzing(true);
     setError(null);
-    try {
-      const result = await analyzeData(rawData);
-      setReport(result);
-      setActiveTab("report"); // Switch back to main report view
-      if (user) {
-        await persistenceService.saveReport(result, 'raw');
+    
+    let attempts = 3;
+    while (attempts > 0) {
+      try {
+        const result = await analyzeData(dataToAnalyze, setCooldownTimer);
+        setReport(result);
+        setActiveTab("report"); 
+        if (user) {
+          await persistenceService.saveReport(result, 'raw');
+        }
+        break; // Success!
+      } catch (err: any) {
+        attempts--;
+        console.error(`Analysis attempt failed. Retries left: ${attempts}`, err);
+        
+        if (attempts > 0 && err.message.includes("congested")) {
+          setNotification("Link congested. Re-establishing connection...");
+          await new Promise(resolve => setTimeout(resolve, 5000));
+          continue;
+        }
+        
+        setError(err.message || "Impact Intelligence synthesis failed.");
+        break;
       }
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Impact Intelligence synthesis failed.");
-    } finally {
-      setIsAnalyzing(false);
     }
+    setIsAnalyzing(false);
   }, [rawData, user]);
 
   const handleGlobalScan = useCallback(async (isBackground = false, region: string = "Global", keywords: string[] = []) => {
     const finalRegion = region.trim() === "" ? "Global" : region;
-    if (!isBackground) setIsAnalyzing(true);
+    
+    if (!isBackground) {
+      abortControllerRef.current = new AbortController();
+      setIsAnalyzing(true);
+    }
     setError(null);
     if (!isBackground) setNotification(`${finalRegion} AI Reconnaissance active. Identifying regional hotspots...`);
-    try {
-      const { rawSummary, report: result } = await directGlobalScanAndAnalyze(finalRegion, keywords);
-      setRawData(rawSummary);
-      setReport(result);
-      if (user) {
-        await persistenceService.saveReport(result, 'surveillance');
-        await persistenceService.updateLastAnalyzed('GLOBAL_SURVEILLANCE');
+    
+    let attempts = 3;
+    while (attempts > 0) {
+      try {
+        const { rawSummary, report: result } = await directGlobalScanAndAnalyze(finalRegion, keywords, setCooldownTimer);
+        setRawData(rawSummary);
+        setReport(result);
+        if (user) {
+          await persistenceService.saveReport(result, 'surveillance');
+          await persistenceService.updateLastAnalyzed('GLOBAL_SURVEILLANCE');
+        }
+        setLastScanTime(new Date());
+        if (!isBackground) {
+          setNotification("Scanning complete. New intelligence detected.");
+          setActiveTab("report"); 
+        }
+        break; // Success!
+      } catch (err: any) {
+        attempts--;
+        console.error(`Scan attempt failed. Retries left: ${attempts}`, err);
+        
+        if (attempts > 0 && err.message.includes("congested") && !isBackground) {
+          setNotification("Link congested. Waiting for regional signal reset...");
+          await new Promise(resolve => setTimeout(resolve, 5000));
+          continue;
+        }
+        
+        if (!isBackground) setError(err.message || "Global surveillance failed.");
+        break;
       }
-      setLastScanTime(new Date());
-      if (!isBackground) {
-        setNotification("Scanning complete. New intelligence detected.");
-        setActiveTab("report"); // Switch to report which now includes the globe
-      }
-    } catch (err: any) {
-      console.error(err);
-      if (!isBackground) setError(err.message || "Global surveillance failed.");
-    } finally {
-      if (!isBackground) setIsAnalyzing(false);
-      if (!isBackground) setTimeout(() => setNotification(null), 3000);
+    }
+    
+    if (!isBackground) {
+      setIsAnalyzing(false);
+      abortControllerRef.current = null;
+      setTimeout(() => setNotification(null), 3000);
     }
   }, [user]);
+
+  const cancelTask = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsAnalyzing(false);
+    setNotification("Analysis task terminated.");
+    setTimeout(() => setNotification(null), 3000);
+  }, []);
 
   // Polling for "Continuous Monitoring" in the frontend
   useEffect(() => {
@@ -551,15 +615,17 @@ STATED REQUIREMENTS:
             <IngestionCenter 
               onDataSubmit={(data) => {
                 setRawData(data);
-                handleAnalyze();
+                handleAnalyze(data);
               }}
               onGlobalScan={handleGlobalScan}
               isAnalyzing={isAnalyzing}
+              onCancelTask={cancelTask}
               isMonitoring={isMonitoring}
               onToggleMonitoring={toggleMonitoring}
               isStreaming={isLiveStreamActive}
               onToggleStreaming={toggleLiveStream}
               onLoadPresets={loadSamplePreset}
+              cooldownTimer={cooldownTimer}
             />
 
             {error && (

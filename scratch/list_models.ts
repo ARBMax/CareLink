@@ -1,21 +1,17 @@
-import axios from "axios";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";
 
-const apiKey = process.env.GEMINI_API_KEY || "";
+const apiKey = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey || "");
 
-async function list() {
+async function listModels() {
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-    console.log("Fetching models from:", url.replace(apiKey, "REDACTED"));
-    const response = await axios.get(url);
-    console.log("Available models:");
-    response.data.models.forEach((m: any) => console.log(`- ${m.name}`));
-  } catch (e: any) {
-    console.error("Error:", e.message);
-    if (e.response) {
-      console.error("Response data:", JSON.stringify(e.response.data, null, 2));
-    }
+    const models = await genAI.listModels();
+    console.log("Available Models:");
+    models.models.forEach(m => console.log(`- ${m.name}`));
+  } catch (error) {
+    console.error("Error listing models:", error);
   }
 }
 
-list();
+listModels();
