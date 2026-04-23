@@ -4,23 +4,22 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "module": "ESNext",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    /* Changed: 'node' resolution is required for backend scripts */
+    "moduleResolution": "node",
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
+    /* Changed: Must be false to allow 'tsc' to actually create the dist files */
+    "noEmit": false, 
+    "esModuleInterop": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "allowImportingTsExtensions": true,
-    "noEmit": true
-  }
+      "@/*": ["./src/*"]
+    }
+  },
+  /* Only include the files we want to compile */
+  "include": ["src", "server.ts"],
+  "exclude": ["node_modules", "dist"]
 }
