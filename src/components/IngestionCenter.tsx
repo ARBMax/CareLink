@@ -54,8 +54,6 @@ export function IngestionCenter({
   const [activeTab, setActiveTab] = useState('upload');
   const [fieldReport, setFieldReport] = useState({
     location: '',
-    category: 'General',
-    priority: 'Medium',
     description: '',
     peopleAffected: ''
   });
@@ -68,13 +66,11 @@ export function IngestionCenter({
 FIELD REPORT SUMMARY
 --------------------
 LOCATION: ${fieldReport.location}
-CATEGORY: ${fieldReport.category}
-PRIORITY: ${fieldReport.priority}
 POPULATION AFFECTED: ${fieldReport.peopleAffected}
 STATED NEED: ${fieldReport.description}
     `;
     onDataSubmit(formattedData.trim());
-    setFieldReport({ location: '', category: 'General', priority: 'Medium', description: '', peopleAffected: '' });
+    setFieldReport({ location: '', description: '', peopleAffected: '' });
   };
 
   const handleFileDrop = useCallback((e: React.DragEvent) => {
@@ -194,35 +190,6 @@ STATED NEED: ${fieldReport.description}
                             value={fieldReport.location}
                             onChange={e => setFieldReport(prev => ({ ...prev, location: e.target.value }))}
                           />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                          <label className="text-[9px] uppercase tracking-widest opacity-40 font-bold ml-1">Urgency</label>
-                          <select 
-                            className="w-full h-10 rounded-xl bg-foreground/5 border-none text-xs px-3 focus:ring-0"
-                            value={fieldReport.priority}
-                            onChange={e => setFieldReport(prev => ({ ...prev, priority: e.target.value }))}
-                          >
-                            <option>Critical</option>
-                            <option>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
-                          </select>
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[9px] uppercase tracking-widest opacity-40 font-bold ml-1">Category</label>
-                          <select 
-                            className="w-full h-10 rounded-xl bg-foreground/5 border-none text-xs px-3 focus:ring-0"
-                            value={fieldReport.category}
-                            onChange={e => setFieldReport(prev => ({ ...prev, category: e.target.value }))}
-                          >
-                            <option>Medical</option>
-                            <option>Water/Sanitation</option>
-                            <option>Food/Shelter</option>
-                            <option>Logistics</option>
-                            <option>Protection</option>
-                          </select>
                         </div>
                       </div>
                     </div>
