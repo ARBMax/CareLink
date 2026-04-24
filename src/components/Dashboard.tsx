@@ -247,7 +247,6 @@ const IntelligenceTabs = memo(({
               reports={archivedReports} 
               onSelect={onSelectArchived} 
               selectedIds={selectedForSynthesis.map(r => r.id || '')}
-              onSelectMultiple={(reps) => {}} // Handle clicking in dashboard
             />
           )}
         </TabsContent>
@@ -495,9 +494,8 @@ export function Dashboard() {
     }
   };
 
-  const handleSelectArchived = useCallback((stored: StoredReport) => {
-    // If shift key or Selection Mode is active (implied by multi-select in Hub)
-    if (activeTab === 'synthesis') {
+  const handleSelectArchived = useCallback((stored: StoredReport, isMulti: boolean = false) => {
+    if (isMulti) {
       setSelectedForSynthesis(prev => {
         const exists = prev.find(p => p.id === stored.id);
         if (exists) return prev.filter(p => p.id !== stored.id);
@@ -509,7 +507,7 @@ export function Dashboard() {
       setReport(stored);
       setActiveTab("report");
     }
-  }, [activeTab]);
+  }, []);
 
   const handleFileRequest = useCallback((type: string) => {
     if (!report) return;

@@ -9,8 +9,7 @@ import { motion } from "motion/react";
 
 interface ReportHistoryProps {
   reports: StoredReport[];
-  onSelect: (report: StoredReport) => void;
-  onSelectMultiple?: (reports: StoredReport[]) => void;
+  onSelect: (report: StoredReport, isMulti: boolean) => void;
   selectedIds?: string[];
 }
 
@@ -23,16 +22,15 @@ const HistoryItem = React.memo(({
 }: { 
   report: StoredReport; 
   idx: number; 
-  onSelect: (r: StoredReport) => void;
+  onSelect: (r: StoredReport, isMulti: boolean) => void;
   isSelected?: boolean;
-  isSelectionMode?: boolean;
 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(idx * 0.03, 0.5) }} 
-      onClick={() => onSelect(report)}
+      onClick={(e) => onSelect(report, e.shiftKey || e.metaKey || e.ctrlKey)}
       className={`group relative p-4 rounded-xl cursor-pointer transition-all border ${
         isSelected 
           ? 'bg-primary/5 border-primary/20 shadow-[0_0_15px_rgba(37,99,235,0.05)]' 
@@ -73,7 +71,7 @@ const HistoryItem = React.memo(({
 
 HistoryItem.displayName = "HistoryItem";
 
-export function ReportHistory({ reports, onSelect, onSelectMultiple, selectedIds = [] }: ReportHistoryProps) {
+export function ReportHistory({ reports, onSelect, selectedIds = [] }: ReportHistoryProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const deferredSearch = useDeferredValue(searchTerm);
 
@@ -94,9 +92,7 @@ export function ReportHistory({ reports, onSelect, onSelectMultiple, selectedIds
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <CardTitle className="text-[10px] uppercase tracking-[0.2em] opacity-40 font-bold">CareLink Archive</CardTitle>
-            {onSelectMultiple && (
-              <p className="text-[8px] opacity-30 uppercase tracking-widest font-mono">Shift+Click to multi-select for regional synthesis</p>
-            )}
+            <p className="text-[8px] opacity-30 uppercase tracking-widest font-mono">Hold down Shift, Ctrl (Win), or Cmd (Mac) + Click to multi-select for regional synthesis</p>
           </div>
           <Badge variant="outline" className="text-[8px] opacity-40">{reports.length} FIELD_LOGS</Badge>
         </div>
