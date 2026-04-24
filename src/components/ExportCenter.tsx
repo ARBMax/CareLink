@@ -232,7 +232,7 @@ export const ExportCenter = memo(function ExportCenter({ report }: ExportCenterP
               <div className="space-y-8 max-w-3xl mx-auto">
                 {/* Slide 1 */}
                 <div className="aspect-video bg-[#020617] rounded-xl flex flex-col items-center justify-center text-center p-12 shadow-2xl border border-white/10">
-                  <h1 className="text-5xl font-bold text-primary mb-4 uppercase">CARELINK</h1>
+                  <h1 className="text-5xl font-bold text-primary mb-4">CareLink</h1>
                   <h2 className="text-2xl text-[#E4E3E0] tracking-widest uppercase opacity-60">Humanitarian Impact & Resource Efficiency</h2>
                 </div>
 

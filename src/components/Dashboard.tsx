@@ -4,7 +4,7 @@ import { AnalysisReport } from "../types";
 import { useAuth } from "./AuthProvider";
 import { ThemeToggle } from "./ThemeToggle";
 import { ReportView } from "./ReportView";
-import { DataVisualizer } from "./DataVisualizer";
+
 import { ScenarioSimulator } from "./ScenarioSimulator";
 import { SynthesisHub } from "./SynthesisHub";
 import { ExportCenter } from "./ExportCenter";
@@ -36,45 +36,45 @@ const ImpactLogs = memo(({ isAnalyzing, report, isMonitoring, isStreaming, lastS
   return (
     <Card className="border-foreground/5 bg-black text-[#E4E3E0] shadow-2xl overflow-hidden">
       <CardHeader className="border-b border-white/5 bg-white/[0.02] py-3">
-        <CardTitle className="flex items-center gap-3 text-[9px] uppercase tracking-[0.3em] opacity-40 font-bold">
+        <CardTitle className="flex items-center gap-3 text-[9px] uppercase tracking-[0.3em] opacity-70 font-bold">
           <Terminal className="h-3 w-3" />
           CareLink System Logs
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-[120px] font-mono text-[10px] p-4 opacity-60">
+        <ScrollArea className="h-[120px] font-mono text-[10px] p-4 opacity-80">
           <div className="space-y-1.5">
             <div className="flex gap-3">
-              <span className="opacity-30">[00:00:01]</span>
+              <span className="opacity-60">[00:00:01]</span>
               <span>CareLink intelligence hub online...</span>
             </div>
             {isAnalyzing && (
               <div className="flex gap-3 text-primary animate-pulse">
-                <span className="opacity-30">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
+                <span className="opacity-60">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
                 <span>Urgency detection engine actively scanning datasets...</span>
               </div>
             )}
             {isStreaming && (
               <div className="flex gap-3 text-neon-cyan animate-pulse">
-                <span className="opacity-30">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
+                <span className="opacity-60">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
                 <span>Field data stream ingestion established. Ingesting community reports.</span>
               </div>
             )}
             {report && (
               <div className="flex gap-3 text-neon-cyan/80">
-                <span className="opacity-30">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
+                <span className="opacity-60">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
                 <span>Impact matrix synchronized. Priorities flagged.</span>
               </div>
             )}
             {isMonitoring && (
               <div className="flex gap-3 text-red-500 animate-pulse">
-                <span className="opacity-30">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
+                <span className="opacity-60">[{new Date().toLocaleTimeString('en-US', { hour12: false })}]</span>
                 <span>Urgent need surveillance active...</span>
               </div>
             )}
             {lastScanTime && (
               <div className="flex gap-3 text-neon-cyan">
-                <span className="opacity-30">[{lastScanTime.toLocaleTimeString('en-US', { hour12: false })}]</span>
+                <span className="opacity-60">[{lastScanTime.toLocaleTimeString('en-US', { hour12: false })}]</span>
                 <span>Regional scan refresh successful.</span>
               </div>
             )}
@@ -107,10 +107,10 @@ const DashboardHeader = memo(({ user, logout, isPhoneMode, onTogglePhoneMode }: 
         <div className="flex items-center gap-3">
           <CareLinkLogo size={isPhoneMode ? 32 : 40} />
           <div className="flex flex-col">
-            <h1 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold tracking-tighter uppercase leading-none`}>
+            <h1 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold tracking-tighter leading-none`}>
               Care<span className="text-primary font-black">Link</span>
             </h1>
-            {!isPhoneMode && <p className="text-[9px] font-mono opacity-40 uppercase tracking-[0.3em] mt-1.5 italic">Humanitarian Intelligence Hub v2.1.0</p>}
+            {!isPhoneMode && <p className="text-[9px] font-mono opacity-70 uppercase tracking-[0.3em] mt-1.5 italic">Humanitarian Intelligence Hub v2.1.0</p>}
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -118,7 +118,7 @@ const DashboardHeader = memo(({ user, logout, isPhoneMode, onTogglePhoneMode }: 
             <div className="hidden md:flex items-center gap-4 px-4 py-1.5 rounded-full bg-foreground/5 border border-foreground/5">
               <div className="text-right">
                 <p className="text-[10px] font-bold uppercase tracking-tight">{user?.displayName}</p>
-                <p className="text-[8px] opacity-40 uppercase tracking-widest">{user?.email}</p>
+                <p className="text-[8px] opacity-70 uppercase tracking-widest">{user?.email}</p>
               </div>
               {user?.photoURL ? (
                 <img src={user.photoURL} alt="Profile" className="h-7 w-7 rounded-full border border-foreground/10" referrerPolicy="no-referrer" />
@@ -134,7 +134,7 @@ const DashboardHeader = memo(({ user, logout, isPhoneMode, onTogglePhoneMode }: 
               variant="ghost"
               size="sm"
               onClick={onTogglePhoneMode}
-              className={`h-9 w-9 p-0 rounded-lg transition-colors ${isPhoneMode ? 'bg-primary/20 text-primary' : 'opacity-40 hover:opacity-100'}`}
+              className={`h-9 w-9 p-0 rounded-lg transition-colors ${isPhoneMode ? 'bg-primary/20 text-primary' : 'opacity-70 hover:opacity-100'}`}
               title="Toggle Regional Optimization"
             >
               <Globe className={`h-4 w-4 ${isPhoneMode ? 'rotate-12' : ''}`} />
@@ -144,7 +144,7 @@ const DashboardHeader = memo(({ user, logout, isPhoneMode, onTogglePhoneMode }: 
               variant="ghost" 
               size="sm" 
               onClick={logout}
-              className="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
+              className="text-[10px] uppercase tracking-widest opacity-70 hover:opacity-100 transition-opacity"
             >
               Logout
             </Button>
@@ -153,9 +153,9 @@ const DashboardHeader = memo(({ user, logout, isPhoneMode, onTogglePhoneMode }: 
              <div className="hidden sm:flex flex-col gap-1 pl-4 border-l border-foreground/10 justify-center min-w-[130px]">
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-                <span className="text-[9px] font-bold uppercase tracking-widest opacity-60">Secure</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest opacity-80">Secure</span>
               </div>
-              <div className="font-mono text-[8.5px] font-bold text-foreground/50 uppercase tracking-[0.2em] whitespace-nowrap">
+              <div className="font-mono text-[8.5px] font-bold text-foreground/70 uppercase tracking-[0.2em] whitespace-nowrap">
                 {`${currentTime.getFullYear()}-${String(currentTime.getMonth() + 1).padStart(2, '0')}-${String(currentTime.getDate()).padStart(2, '0')} ${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}:${String(currentTime.getSeconds()).padStart(2, '0')} LOC`}
               </div>
             </div>
@@ -199,15 +199,12 @@ const IntelligenceTabs = memo(({
   return (
     <Tabs value={activeTab} onValueChange={onTabChange} className="w-full flex flex-col items-center">
       <div className={`flex flex-col items-center w-full ${isPhoneMode ? 'gap-6 mb-8' : 'gap-8 mb-12'}`}>
-        <TabsList className={`grid w-full bg-foreground/5 p-1 rounded-2xl ${isPhoneMode ? 'grid-cols-4 grid-rows-2 h-auto max-w-full' : 'max-w-6xl grid-cols-7'}`}>
+        <TabsList className={`grid w-full bg-foreground/5 p-1 rounded-2xl ${isPhoneMode ? 'grid-cols-4 grid-rows-2 h-auto max-w-full' : 'max-w-6xl grid-cols-6'}`}>
           <TabsTrigger value="report" className="text-[9px] py-2.5 uppercase tracking-widest rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-md">
             Impact
           </TabsTrigger>
           <TabsTrigger value="history" className="text-[9px] py-2.5 uppercase tracking-widest rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-md">
             History
-          </TabsTrigger>
-          <TabsTrigger value="visuals" className="text-[9px] py-2.5 uppercase tracking-widest rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-md">
-            Trends
           </TabsTrigger>
           <TabsTrigger value="simulator" className="text-[9px] py-2.5 uppercase tracking-widest rounded-xl data-[state=active]:bg-background data-[state=active]:shadow-md">
             Outlook
@@ -228,7 +225,7 @@ const IntelligenceTabs = memo(({
             variant="ghost" 
             size="sm" 
             onClick={exportReport}
-            className="text-[9px] uppercase tracking-[0.3em] opacity-30 hover:opacity-100 transition-opacity"
+            className="text-[9px] uppercase tracking-[0.3em] opacity-70 hover:opacity-100 transition-opacity"
           >
             <Download className="mr-2 h-3 w-3" />
             Raw JSON Export Protocol
@@ -240,7 +237,7 @@ const IntelligenceTabs = memo(({
         <TabsContent value="report" className="mt-0 outline-none w-full">
           {activeTab === "report" && (
             report ? <ReportView report={report} /> : (
-              <div className="py-20 text-center opacity-20 text-[10px] uppercase tracking-[0.3em]">Awaiting Impact Intelligence...</div>
+              <div className="py-20 text-center opacity-50 text-[10px] uppercase tracking-[0.3em]">Awaiting Impact Intelligence...</div>
             )
           )}
         </TabsContent>
@@ -254,17 +251,15 @@ const IntelligenceTabs = memo(({
             />
           )}
         </TabsContent>
-        <TabsContent value="visuals" className="mt-0 outline-none w-full">
-          {activeTab === "visuals" && <DataVisualizer report={report} rawData={rawData} liveStream={liveStreamData} />}
-        </TabsContent>
+
         <TabsContent value="simulator" className="mt-0 outline-none w-full">
           {activeTab === "simulator" && report ? <ScenarioSimulator report={report} /> : (
-            <div className="py-20 text-center opacity-20 text-[10px] uppercase tracking-[0.3em]">Analyze field data to enable outlook simulation</div>
+            <div className="py-20 text-center opacity-50 text-[10px] uppercase tracking-[0.3em]">Analyze field data to enable outlook simulation</div>
           )}
         </TabsContent>
         <TabsContent value="volunteers" className="mt-0 outline-none w-full">
           {activeTab === "volunteers" && report ? <VolunteerMatcher report={report} /> : (
-            <div className="py-20 text-center opacity-20 text-[10px] uppercase tracking-[0.3em]">Analyze field data to enable volunteer matching</div>
+            <div className="py-20 text-center opacity-50 text-[10px] uppercase tracking-[0.3em]">Analyze field data to enable volunteer matching</div>
           )}
         </TabsContent>
         <TabsContent value="synthesis" className="mt-0 outline-none w-full">
@@ -274,7 +269,7 @@ const IntelligenceTabs = memo(({
         </TabsContent>
         <TabsContent value="export" className="mt-0 outline-none w-full">
           {activeTab === "export" && report ? <ExportCenter report={report} /> : (
-            <div className="py-20 text-center opacity-20 text-[10px] uppercase tracking-[0.3em]">Analyze data to enable export</div>
+            <div className="py-20 text-center opacity-50 text-[10px] uppercase tracking-[0.3em]">Analyze data to enable export</div>
           )}
         </TabsContent>
       </div>
@@ -608,7 +603,7 @@ STATED REQUIREMENTS:
           <section className={`w-full mx-auto ${isPhoneMode ? '' : 'max-w-4xl space-y-8'}`}>
             {!isPhoneMode && (
               <div className="text-center space-y-2 mb-8">
-                <h2 className="text-sm font-bold uppercase tracking-[0.4em] opacity-30">Intelligence Input Protocol</h2>
+                <h2 className="text-sm font-bold uppercase tracking-[0.4em] opacity-70">Intelligence Input Protocol</h2>
               </div>
             )}
             
@@ -707,7 +702,7 @@ STATED REQUIREMENTS:
                       <Zap className={`${isPhoneMode ? 'h-4 w-4' : 'h-6 w-6'} text-primary animate-pulse`} />
                     </div>
                   </div>
-                  <h3 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold opacity-30 uppercase tracking-widest`}>Synthesizing</h3>
+                  <h3 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold opacity-70 uppercase tracking-widest`}>Synthesizing</h3>
                   <p className="animate-pulse font-mono text-[10px] opacity-20 uppercase tracking-[0.5em] mt-4">PROBING...</p>
                 </motion.div>
               ) : (
@@ -721,11 +716,11 @@ STATED REQUIREMENTS:
                   <div className={`flex items-center justify-center rounded-full bg-foreground/5 border border-foreground/5 ${isPhoneMode ? 'mb-4 h-14 w-14' : 'mb-6 h-20 w-20'}`}>
                     <FileText className={`opacity-10 ${isPhoneMode ? 'h-6 w-6' : 'h-8 w-8'}`} />
                   </div>
-                  <h3 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold opacity-30 uppercase tracking-widest text-center`}>
+                  <h3 className={`${isPhoneMode ? 'text-lg' : 'text-xl'} font-bold opacity-70 uppercase tracking-widest text-center`}>
                     {isPhoneMode ? "Awaiting Data" : "Awaiting Intelligence Feed"}
                   </h3>
                   {!isPhoneMode && (
-                    <p className="max-w-xs text-center text-[11px] opacity-20 uppercase tracking-widest mt-4 leading-relaxed">
+                    <p className="max-w-xs text-center text-[11px] opacity-60 uppercase tracking-widest mt-4 leading-relaxed">
                       Input raw data or a target URL to generate a decision-ready intelligence report.
                     </p>
                   )}
@@ -737,7 +732,7 @@ STATED REQUIREMENTS:
       </main>
 
       <footer className={`mx-auto w-full border-t border-foreground/5 px-6 ${isPhoneMode ? 'py-10' : 'py-12 max-w-5xl'}`}>
-        <div className={`flex flex-col items-center justify-between gap-6 opacity-30 ${isPhoneMode ? '' : 'md:flex-row'}`}>
+        <div className={`flex flex-col items-center justify-between gap-6 opacity-70 ${isPhoneMode ? '' : 'md:flex-row'}`}>
           <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-center">
             {isPhoneMode ? "CareLink AI" : "Powered by Gemini 3.1 Flash Lite • CareLink Intelligence Systems"} &bull; {new Date().getFullYear()}
           </p>

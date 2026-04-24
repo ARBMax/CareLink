@@ -12,12 +12,12 @@ export function StartupScreen({ onComplete }: { onComplete: () => void }) {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 500);
+          setTimeout(onComplete, 0);
           return 100;
         }
         return prev + 1;
       });
-    }, 30);
+    }, 12);
 
     const statusInterval = setInterval(() => {
       const statuses = [
@@ -28,7 +28,7 @@ export function StartupScreen({ onComplete }: { onComplete: () => void }) {
         "System Ready."
       ];
       setStatus(statuses[Math.floor(Math.random() * statuses.length)]);
-    }, 800);
+    }, 400);
 
     return () => {
       clearInterval(timer);
@@ -37,7 +37,7 @@ export function StartupScreen({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#020617] text-[#E4E3E0] font-mono technical-grid overflow-hidden">
+    <div className="h-full w-full z-[100] flex flex-col items-center justify-center bg-[#020617] text-[#E4E3E0] font-mono technical-grid overflow-hidden">
       <motion.div
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -50,16 +50,16 @@ export function StartupScreen({ onComplete }: { onComplete: () => void }) {
         <CareLinkLogo size={160} />
       </motion.div>
 
-      <div className="w-80 space-y-6 relative z-10">
-        <div className="flex justify-between text-[10px] uppercase tracking-[0.3em] opacity-50 font-bold">
-          <motion.span
+      <div className="w-full max-w-md px-6 space-y-6 relative z-10 flex flex-col items-center text-center">
+        <div className="w-full flex flex-col items-center gap-1 text-[10px] uppercase tracking-[0.3em] opacity-80 font-bold">
+          <motion.div
             key={status}
-            initial={{ opacity: 0, x: -5 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
           >
             {status}
-          </motion.span>
-          <span>{progress}%</span>
+          </motion.div>
+          <div className="opacity-40">{progress}%</div>
         </div>
         
         <div className="h-[1px] w-full bg-white/5 overflow-hidden rounded-full">
@@ -71,20 +71,20 @@ export function StartupScreen({ onComplete }: { onComplete: () => void }) {
           />
         </div>
 
-        <div className="flex items-center justify-center gap-3 text-[8px] opacity-20 uppercase tracking-[0.5em] mt-8">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-[10px] uppercase tracking-widest opacity-50 py-2"
+        >
+          Awaiting Authorization...
+        </motion.div>
+
+        <div className="flex items-center justify-center gap-3 text-[8px] opacity-60 uppercase tracking-[0.5em]">
           <Loader2 className="h-3 w-3 animate-spin" />
           CareLink Intelligence Systems &bull; Secure Boot
         </div>
       </div>
-
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-12 text-[10px] uppercase tracking-widest opacity-20"
-      >
-        Awaiting Authorization...
-      </motion.div>
       
       {/* Scanning Line Effect */}
       <motion.div 

@@ -100,8 +100,8 @@ STATED NEED: ${fieldReport.description}
             <CardHeader className="border-b border-foreground/5 bg-foreground/[0.01]">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-[10px] uppercase tracking-[0.3em] font-black opacity-40">Intelligence Ingestion Bridge</CardTitle>
-                  <CardDescription className="text-[11px] font-serif italic opacity-60 mt-1">Connect field reports, regional databases, or live surveillance feeds.</CardDescription>
+                  <CardTitle className="text-[10px] uppercase tracking-[0.3em] font-black opacity-70">Intelligence Ingestion Bridge</CardTitle>
+                  <CardDescription className="text-[11px] font-serif italic opacity-80 mt-1">Connect field reports, regional databases, or live surveillance feeds.</CardDescription>
                 </div>
                 <TabsList className="bg-foreground/5 p-1 h-9 rounded-xl">
                   <TabsTrigger value="upload" className="text-[9px] uppercase tracking-widest px-4 rounded-lg">Upload</TabsTrigger>
@@ -149,10 +149,10 @@ STATED NEED: ${fieldReport.description}
                         {isAnalyzing ? (
                           <Loader2 className="h-6 w-6 text-primary animate-spin" />
                         ) : (
-                          <Upload className="h-6 w-6 opacity-40 group-hover:opacity-100 group-hover:text-primary transition-colors" />
+                          <Upload className="h-6 w-6 opacity-70 group-hover:opacity-100 group-hover:text-primary transition-colors" />
                         )}
                       </div>
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover:opacity-80 transition-opacity">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-70 group-hover:opacity-100 transition-opacity">
                         {isAnalyzing ? "Analyzing Field Intel..." : "Upload scattered paper surveys & scanned field reports"}
                       </p>
                       {isAnalyzing && (
@@ -165,7 +165,7 @@ STATED NEED: ${fieldReport.description}
                           Abort Protocol
                         </Button>
                       )}
-                      <p className="text-[9px] opacity-20 uppercase tracking-widest mt-2 font-mono">SUPPORTED: .CSV / .JSON / .TXT</p>
+                      <p className="text-[9px] opacity-50 uppercase tracking-widest mt-2 font-mono">SUPPORTED: .CSV / .JSON / .TXT</p>
                     </div>
                   </motion.div>
                 </TabsContent>
@@ -181,9 +181,9 @@ STATED NEED: ${fieldReport.description}
                   >
                     <div className="space-y-4">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase tracking-widest opacity-40 font-bold ml-1">Report Location</label>
+                        <label className="text-[9px] uppercase tracking-widest opacity-70 font-bold ml-1">Report Location</label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-2.5 h-3.5 w-3.5 opacity-30" />
+                          <MapPin className="absolute left-3 top-2.5 h-3.5 w-3.5 opacity-60" />
                           <input 
                             placeholder="Lat/Long or Region Name" 
                             className="w-full pl-10 h-10 rounded-xl bg-foreground/5 border-none text-xs focus:ring-1 focus:ring-primary/20 transition-all outline-none"
@@ -195,10 +195,10 @@ STATED NEED: ${fieldReport.description}
                     </div>
                     <div className="space-y-4">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase tracking-widest opacity-40 font-bold ml-1">Field Observations</label>
+                        <label className="text-[9px] uppercase tracking-widest opacity-70 font-bold ml-1">Field Observations</label>
                         <textarea 
                           placeholder="Describe the detected gap or urgent requirement..."
-                          className="w-full h-[106px] rounded-xl bg-foreground/5 border-none text-xs p-3 resize-none focus:ring-0 placeholder:opacity-40"
+                          className="w-full h-[106px] rounded-xl bg-foreground/5 border-none text-xs p-3 resize-none focus:ring-0 placeholder:opacity-60"
                           value={fieldReport.description}
                           onChange={e => setFieldReport(prev => ({ ...prev, description: e.target.value }))}
                         />
@@ -224,8 +224,8 @@ STATED NEED: ${fieldReport.description}
                     className="space-y-4"
                   >
                     <div className="flex items-center justify-between px-2">
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Active Humanitarian Entities</h3>
-                      <Badge variant="outline" className="text-[8px] opacity-40 uppercase">Global Coverage</Badge>
+                      <h3 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-70">Active Humanitarian Entities</h3>
+                      <Badge variant="outline" className="text-[8px] opacity-70 uppercase">Global Coverage</Badge>
                     </div>
                     
                     <ScrollArea className="h-[300px] pr-4">
@@ -248,7 +248,7 @@ STATED NEED: ${fieldReport.description}
                         ].map((region) => (
                           <div key={region.country} className="space-y-2">
                             <div className="flex items-center gap-2 mb-3">
-                              <MapPin className="h-3 w-3 text-primary opacity-60" />
+                              <MapPin className="h-3 w-3 text-primary opacity-80" />
                               <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{region.country}</span>
                               <div className="flex-1 h-[1px] bg-primary/10" />
                             </div>
@@ -256,7 +256,7 @@ STATED NEED: ${fieldReport.description}
                               {region.ngos.map((ngo) => (
                                 <div key={ngo} className="p-3 rounded-xl bg-foreground/5 border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all group flex items-center justify-between">
                                   <span className="text-[10px] font-medium opacity-70 group-hover:opacity-100">{ngo}</span>
-                                  <Shield className="h-2.5 w-2.5 opacity-20 group-hover:opacity-60 text-primary" />
+                                  <Shield className="h-2.5 w-2.5 opacity-50 group-hover:opacity-80 text-primary" />
                                 </div>
                               ))}
                             </div>
@@ -276,7 +276,7 @@ STATED NEED: ${fieldReport.description}
       <div className="lg:col-span-4 space-y-6">
         <Card className="border-foreground/5 bg-white/40 dark:bg-[#020617]/40 backdrop-blur-xl h-full shadow-2xl">
           <CardHeader className="bg-foreground/[0.01] border-b border-foreground/5">
-            <CardTitle className="text-[10px] uppercase tracking-[0.3em] font-black opacity-40">Impact Scenarios</CardTitle>
+            <CardTitle className="text-[10px] uppercase tracking-[0.3em] font-black opacity-70">Impact Scenarios</CardTitle>
           </CardHeader>
           <CardContent className="p-4">
             <div className="space-y-2">
@@ -292,24 +292,24 @@ STATED NEED: ${fieldReport.description}
                     </div>
                     <span className="text-xs font-bold uppercase tracking-tight opacity-70 group-hover:opacity-100">{preset.label}</span>
                   </div>
-                  <Plus className="h-3.5 w-3.5 opacity-20 group-hover:opacity-100 group-hover:text-primary" />
+                  <Plus className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 group-hover:text-primary" />
                 </button>
               ))}
             </div>
             
             <div className="mt-8 p-4 rounded-xl bg-foreground/5 border border-dashed border-foreground/10">
-               <div className="flex items-center gap-2 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">
+               <div className="flex items-center gap-2 mb-2 text-[10px] font-bold uppercase tracking-[0.2em] opacity-70">
                   <Database className="h-3.5 w-3.5" />
                   Synthesis Health
                </div>
                <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-[9px] uppercase tracking-widest opacity-30 font-bold">Signal Strength</span>
+                    <span className="text-[9px] uppercase tracking-widest opacity-60 font-bold">Signal Strength</span>
                     <span className="text-[9px] font-mono font-black text-emerald-500">OPTIMAL</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[9px] uppercase tracking-widest opacity-30 font-bold">Buffer Depth</span>
-                    <span className="text-[9px] font-mono opacity-50">12,000 chars</span>
+                    <span className="text-[9px] uppercase tracking-widest opacity-60 font-bold">Buffer Depth</span>
+                    <span className="text-[9px] font-mono opacity-80">12,000 chars</span>
                   </div>
                   <div className="w-full h-1 bg-foreground/5 rounded-full overflow-hidden">
                     <motion.div 

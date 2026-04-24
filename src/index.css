@@ -6,16 +6,16 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-serif: "Libre Baskerville", serif;
 
-  --color-background: #E4E3E0;
-  --color-foreground: #000B26;
-  --color-card: rgba(255, 255, 255, 0.5);
-  --color-card-foreground: #000B26;
-  --color-primary: #2563EB;
-  --color-primary-foreground: #E4E3E0;
-  --color-muted: rgba(0, 11, 38, 0.05);
-  --color-muted-foreground: rgba(0, 11, 38, 0.5);
-  --color-border: rgba(0, 11, 38, 0.2);
-  --color-ring: rgba(37, 99, 235, 0.3);
+  --color-background: #F4F1EA;
+  --color-foreground: #1C2331;
+  --color-card: rgba(236, 232, 222, 0.8);
+  --color-card-foreground: #1C2331;
+  --color-primary: #0E7490;
+  --color-primary-foreground: #ffffff;
+  --color-muted: rgba(28, 35, 49, 0.05);
+  --color-muted-foreground: rgba(28, 35, 49, 0.7);
+  --color-border: rgba(28, 35, 49, 0.15);
+  --color-ring: rgba(14, 116, 144, 0.3);
 
   --color-neon-cyan: #00f3ff;
   --color-neon-blue: #2563EB;
@@ -32,8 +32,8 @@
   --color-primary: #3b82f6;
   --color-primary-foreground: #020617;
   --color-muted: rgba(228, 227, 224, 0.05);
-  --color-muted-foreground: rgba(228, 227, 224, 0.5);
-  --color-border: rgba(228, 227, 224, 0.1);
+  --color-muted-foreground: rgba(228, 227, 224, 0.75);
+  --color-border: rgba(228, 227, 224, 0.25);
   --color-ring: rgba(59, 130, 246, 0.2);
   --grid-dot: #ffffff;
 }
@@ -97,7 +97,7 @@
 }
 
 .col-header {
-  @apply font-serif italic text-[11px] opacity-50 uppercase tracking-wider;
+  @apply font-serif italic text-[11px] opacity-70 uppercase tracking-wider;
 }
 
 .data-value {

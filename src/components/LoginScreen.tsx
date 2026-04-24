@@ -31,10 +31,10 @@ export function LoginScreen() {
 
       <div className="text-center space-y-6 max-w-sm px-6 relative z-10">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold tracking-tighter uppercase drop-shadow-lg">
+          <h1 className="text-2xl font-bold tracking-tighter drop-shadow-lg">
             Care<span className="text-primary">Link</span>
           </h1>
-          <p className="text-[10px] opacity-70 uppercase tracking-widest leading-relaxed drop-shadow-md">
+          <p className="text-[10px] opacity-90 uppercase tracking-widest leading-relaxed drop-shadow-md">
             Humanitarian Intelligence Hub. Secure Authorization Required to Access Action Networks.
           </p>
         </div>
@@ -52,7 +52,7 @@ export function LoginScreen() {
           {isLoggingIn ? "Authorizing..." : "Authorize via Google"}
         </Button>
 
-        <div className="text-[8px] opacity-40 uppercase tracking-[0.3em] drop-shadow-md">
+        <div className="text-[8px] opacity-70 uppercase tracking-[0.3em] drop-shadow-md">
           End-to-End Encryption &bull; Secure Session Protocol
         </div>
       </div>

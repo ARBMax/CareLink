@@ -23,20 +23,7 @@ isSupported().then((yes) => {
   // Silently ignore if analytics is not supported in this environment
 });
 
-// Test connection to Firestore
-async function testConnection() {
-  try {
-    // Attempt to fetch a non-existent doc just to check connectivity
-    await getDocFromServer(doc(db, 'system', 'connection_test'));
-    console.log("Firebase: Firestore connection verified.");
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Firebase: Firestore configuration error - client is offline.");
-    }
-  }
-}
-
-testConnection();
+// Initialization complete
 
 export { signInWithPopup, signOut, onAuthStateChanged };
 export type { User };
