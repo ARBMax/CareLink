@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+🛰️ CareLink: Humanitarian Intelligence Hub
+CareLink is a high-performance intelligence platform designed to synthesize complex field data into actionable humanitarian insights. By leveraging advanced generative AI and real-time data processing, the hub provides secure authorization and structural analysis for critical action networks.
 
-# Run and deploy your AI Studio app
+🛠️ Tech Stack
+-Frontend: React 19 + Vite (Using Google AI studio & Antigravity for further changes)
 
-This contains everything you need to run your app locally.
+-Styling: Tailwind CSS + Shadcn UI
 
-View your app in AI Studio: https://ai.studio/apps/667de510-07e6-4f5f-b1fb-99323c38c502
+-Backend: Node.js (Express) + TypeScript + Firestore
 
-## Run Locally
+-Intelligence: Google Gemini 
 
-**Prerequisites:**  Node.js
+-Security & Auth: Firebase Authentication (Google OAuth)
 
+-Deployment: Render (Automated CI/CD via GitHub)
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+🚀 Key Features
+-Social Impact Synthesis: Automated analysis of field data to determine humanitarian impact.
+
+-Secure Authorization: End-to-end encrypted session protocols via Firebase.
+
+-Real-time Intelligence: Integration with Gemini AI for instant data processing and anomaly detection.
+
+-Responsive UI: A futuristic, dark-themed dashboard optimized for high-stakes environments.
+
+How to Run Locally
+-Clone the repository.
+-Install dependencies: npm install.
+-Create a .env file and add your GEMINI_API_KEY and Firebase config.
+-Start the development server: npm run dev.
+
+Note-
+Please refresh your page if it shows any sort of error(Further development will be done to fix the issues).
