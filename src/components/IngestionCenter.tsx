@@ -98,12 +98,12 @@ STATED NEED: ${fieldReport.description}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <Card className="border-foreground/5 bg-white/40 dark:bg-[#020617]/40 backdrop-blur-xl overflow-hidden shadow-2xl">
             <CardHeader className="border-b border-foreground/5 bg-foreground/[0.01]">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3">
                 <div>
                   <CardTitle className="text-[10px] uppercase tracking-[0.3em] font-black opacity-70">Intelligence Ingestion Bridge</CardTitle>
                   <CardDescription className="text-[11px] font-serif italic opacity-80 mt-1">Connect field reports, regional databases, or live surveillance feeds.</CardDescription>
                 </div>
-                <TabsList className="bg-foreground/5 p-1 h-9 rounded-xl">
+                <TabsList className="bg-foreground/5 p-1 h-9 rounded-xl self-start">
                   <TabsTrigger value="upload" className="text-[9px] uppercase tracking-widest px-4 rounded-lg">Upload</TabsTrigger>
                   <TabsTrigger value="field" className="text-[9px] uppercase tracking-widest px-4 rounded-lg">Reporter</TabsTrigger>
                   <TabsTrigger value="directory" className="text-[9px] uppercase tracking-widest px-4 rounded-lg">Directory</TabsTrigger>

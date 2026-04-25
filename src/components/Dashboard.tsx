@@ -732,7 +732,7 @@ STATED REQUIREMENTS:
       <footer className={`mx-auto w-full border-t border-foreground/5 px-6 ${isPhoneMode ? 'py-10' : 'py-12 max-w-5xl'}`}>
         <div className={`flex flex-col items-center justify-between gap-6 opacity-70 ${isPhoneMode ? '' : 'md:flex-row'}`}>
           <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-center">
-            {isPhoneMode ? "CareLink AI" : "Powered by Gemini 3.1 Flash Lite • CareLink Intelligence Systems"} &bull; {new Date().getFullYear()}
+            {isPhoneMode ? "CareLink AI" : "Powered by Gemini • CareLink Intelligence Systems"} &bull; {new Date().getFullYear()}
           </p>
           <div className={`flex items-center gap-6 text-[9px] uppercase tracking-widest font-bold ${isPhoneMode ? 'flex-wrap justify-center' : ''}`}>
             <span>Privacy</span>
