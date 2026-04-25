@@ -31,3 +31,10 @@ How to Run Locally
 
 Note-
 Please refresh your page if it shows any sort of error(Further development will be done to fix the issues).
+
+Team Mates:
+-Abhinav R Bolar
+-Alan Rohan Lobo
+-Ashwith A
+-Akhil Raj
+
